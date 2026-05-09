@@ -503,19 +503,19 @@ client.on('interactionCreate', async interaction => {
   }
   if (commandName === 'checkbio') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
-      return interaction.reply({ content: 'You need Manage Roles permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Roles permission.', flags: 64 });
     }
     const target = options.getMember('user');
-    if (!target) return interaction.reply({ content: 'Select a valid user.', ephemeral: true });
+    if (!target) return interaction.reply({ content: 'Select a valid user.', flags: 64 });
     await checkUserBio(target, cfg);
-    return interaction.reply({ content: ✅ Checked bio/status for ${target.user.tag}, ephemeral: true });
+    return interaction.reply({ content: ✅ Checked bio/status for ${target.user.tag}, flags: 64 });
   }
   if (commandName === 'forcebio') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
-      return interaction.reply({ content: 'You need Manage Roles permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Roles permission.', flags: 64 });
     }
-    if (!cfg.customRoleId) return interaction.reply({ content: 'No custom role set. Use /setcustomrole.', ephemeral: true });
-    await interaction.reply({ content: '🚀 Starting force bio check for all members...', ephemeral: true });
+    if (!cfg.customRoleId) return interaction.reply({ content: 'No custom role set. Use /setcustomrole.', flags: 64 });
+    await interaction.reply({ content: '🚀 Starting force bio check for all members...', flags: 64 });
     let count = 0;
     try {
       const members = await guild.members.fetch();
@@ -528,7 +528,7 @@ client.on('interactionCreate', async interaction => {
     } catch (err) {
       console.error('forcebio fetch error:', err);
     }
-    return interaction.followUp({ content: ✅ Force checked ${count} members for custom string, ephemeral: true });
+    return interaction.followUp({ content: ✅ Force checked ${count} members for custom string, flags: 64 });
   }
   if (commandName === 'config') {
     const socialPreview = Object.entries(cfg.socialLinks)
@@ -556,43 +556,43 @@ client.on('interactionCreate', async interaction => {
   }
   if (commandName === 'setcustomrole') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
-      return interaction.reply({ content: 'You need Manage Server permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Server permission.', flags: 64 });
     }
     const role = options.getRole('role');
     cfg.customRoleId = role.id;
     await saveDB();
-    return interaction.reply({ content: ✅ Custom role for bio string set to ${role}, ephemeral: true });
+    return interaction.reply({ content: ✅ Custom role for bio string set to ${role}, flags: 64 });
   }
   if (commandName === 'setbiostring') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
-      return interaction.reply({ content: 'You need Manage Server permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Server permission.', flags: 64 });
     }
     const bioString = options.getString('string').trim();
-    if (!bioString) return interaction.reply({ content: 'Provide a non-empty string.', ephemeral: true });
+    if (!bioString) return interaction.reply({ content: 'Provide a non-empty string.', flags: 64 });
     cfg.customBioString = bioString;
     await saveDB();
-    return interaction.reply({ content: ✅ Custom bio string set to "${bioString}", ephemeral: true });
+    return interaction.reply({ content: ✅ Custom bio string set to "${bioString}", flags: 64 });
   }
   if (commandName === 'setroleannouncechannel') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
-      return interaction.reply({ content: 'You need Manage Server permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Server permission.', flags: 64 });
     }
     const channel = options.getChannel('channel');
     cfg.roleAnnounceChannelId = channel.id;
     await saveDB();
-    return interaction.reply({ content: ✅ Role announce channel set to ${channel}, ephemeral: true });
+    return interaction.reply({ content: ✅ Role announce channel set to ${channel}, flags: 64 });
   }
   if (commandName === 'resetdb') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
-      return interaction.reply({ content: 'You need Manage Server permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Server permission.', flags: 64 });
     }
     cfg.lastBioCheck = {};
     await saveDB();
-    return interaction.reply({ content: '✅ Reset bio check cache.', ephemeral: true });
+    return interaction.reply({ content: '✅ Reset bio check cache.', flags: 64 });
   }
   if (commandName === 'reactionrole') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
-      return interaction.reply({ content: 'You need Manage Roles permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Roles permission.', flags: 64 });
     }
     const subcommand = options.getSubcommand();
     if (!cfg.reactionRoles) cfg.reactionRoles = {};
@@ -604,26 +604,26 @@ client.on('interactionCreate', async interaction => {
       if (!cfg.reactionRoles[messageId]) cfg.reactionRoles[messageId] = [];
       cfg.reactionRoles[messageId].push({ emoji, roleId: role.id });
       await saveDB();
-      return interaction.reply({ content: ✅ Added reaction role: ${emoji} → ${role} on message ${messageId} in ${channel}, ephemeral: true });
+      return interaction.reply({ content: ✅ Added reaction role: ${emoji} → ${role} on message ${messageId} in ${channel}, flags: 64 });
     } else if (subcommand === 'remove') {
       const messageId = options.getString('message_id');
       const emoji = options.getString('emoji');
-      if (!cfg.reactionRoles[messageId]) return interaction.reply({ content: 'No reaction roles found for that message.', ephemeral: true });
+      if (!cfg.reactionRoles[messageId]) return interaction.reply({ content: 'No reaction roles found for that message.', flags: 64 });
       const index = cfg.reactionRoles[messageId].findIndex(rr => rr.emoji === emoji);
-      if (index === -1) return interaction.reply({ content: 'No matching emoji found.', ephemeral: true });
+      if (index === -1) return interaction.reply({ content: 'No matching emoji found.', flags: 64 });
       cfg.reactionRoles[messageId].splice(index, 1);
       if (cfg.reactionRoles[messageId].length === 0) delete cfg.reactionRoles[messageId];
       await saveDB();
-      return interaction.reply({ content: ✅ Removed ${emoji} from message ${messageId}, ephemeral: true });
+      return interaction.reply({ content: ✅ Removed ${emoji} from message ${messageId}, flags: 64 });
     } else if (subcommand === 'list') {
-      if (Object.keys(cfg.reactionRoles).length === 0) return interaction.reply({ content: 'No reaction roles set.', ephemeral: true });
+      if (Object.keys(cfg.reactionRoles).length === 0) return interaction.reply({ content: 'No reaction roles set.', flags: 64 });
       const fields = Object.entries(cfg.reactionRoles).map(([msgId, rrs]) => ({
         name: Message ${msgId},
         value: rrs.map(rr => ${rr.emoji} → <@&${rr.roleId}>).join('\n'),
         inline: true
       }));
       const embed = new EmbedBuilder().setTitle('Reaction Roles').setColor('#ff0000').addFields(fields);
-      return interaction.reply({ embeds: [embed], ephemeral: true });
+      return interaction.reply({ embeds: [embed], flags: 64 });
     }
   }
   if (commandName === 'rank') {
@@ -657,18 +657,18 @@ client.on('interactionCreate', async interaction => {
   }
   if (commandName === 'setxpboost') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
-      return interaction.reply({ content: 'You need Manage Server permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Server permission.', flags: 64 });
     }
     const mult = options.getNumber('multiplier');
     cfg.xpBoost = mult;
     await saveDB();
-    return interaction.reply({ content: ✅ XP boost set to x${mult}, ephemeral: true });
+    return interaction.reply({ content: ✅ XP boost set to x${mult}, flags: 64 });
   }
   if (commandName === 'resetxp') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
       return interaction.reply({
         content: 'You need Manage Server permission to reset XP.',
-        ephemeral: true
+        flags: 64
       });
     }
     cfg.xp = {};
@@ -676,40 +676,40 @@ client.on('interactionCreate', async interaction => {
     await saveDB();
     return interaction.reply({
       content: '✅ All XP data for this server has been reset.',
-      ephemeral: true
+      flags: 64
     });
   }
   if (commandName === 'setwall') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
-      return interaction.reply({ content: 'You need Manage Server permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Server permission.', flags: 64 });
     }
     const channel = options.getChannel('channel');
     cfg.wallOfFameChannelId = channel.id;
     await saveDB();
-    return interaction.reply({ content: ✅ Wall of Fame channel set to ${channel}, ephemeral: true });
+    return interaction.reply({ content: ✅ Wall of Fame channel set to ${channel}, flags: 64 });
   }
   if (commandName === 'setlevelrole') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
-      return interaction.reply({ content: 'You need Manage Roles permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Roles permission.', flags: 64 });
     }
     const lvl = options.getInteger('level');
     const role = options.getRole('role');
     if (!cfg.levelRoles) cfg.levelRoles = {};
     cfg.levelRoles[lvl] = role.id;
     await saveDB();
-    return interaction.reply({ content: ✅ When someone reaches level ${lvl} they will get ${role}, ephemeral: true });
+    return interaction.reply({ content: ✅ When someone reaches level ${lvl} they will get ${role}, flags: 64 });
   }
   if (commandName === 'removelevelrole') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
-      return interaction.reply({ content: 'You need Manage Roles permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Roles permission.', flags: 64 });
     }
     const lvl = options.getInteger('level');
     if (!cfg.levelRoles || !cfg.levelRoles[lvl]) {
-      return interaction.reply({ content: 'No role set for that level.', ephemeral: true });
+      return interaction.reply({ content: 'No role set for that level.', flags: 64 });
     }
     delete cfg.levelRoles[lvl];
     await saveDB();
-    return interaction.reply({ content: ✅ Removed level role for level ${lvl}, ephemeral: true });
+    return interaction.reply({ content: ✅ Removed level role for level ${lvl}, flags: 64 });
   }
   if (commandName === 'listlevelroles') {
     const entries = cfg.levelRoles ? Object.entries(cfg.levelRoles) : [];
@@ -725,7 +725,7 @@ client.on('interactionCreate', async interaction => {
   }
   if (commandName === 'postvoicepanel') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
-      return interaction.reply({ content: 'You need Manage Server permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Server permission.', flags: 64 });
     }
     const embed = new EmbedBuilder()
       .setTitle('Voice Panel')
@@ -789,7 +789,7 @@ client.on('interactionCreate', async interaction => {
     if (!vc) {
       return interaction.reply({
         content: 'You have to be in a voice channel to use the voice panel.',
-        ephemeral: true
+        flags: 64
       });
     }
     const embed = new EmbedBuilder()
@@ -845,20 +845,20 @@ client.on('interactionCreate', async interaction => {
     return interaction.reply({
       embeds: [embed],
       components: [row1, row2],
-      ephemeral: true
+      flags: 64
     });
   }
   if (commandName === 'setjtc') {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
-      return interaction.reply({ content: 'You need Manage Server permission.', ephemeral: true });
+      return interaction.reply({ content: 'You need Manage Server permission.', flags: 64 });
     }
     const channel = options.getChannel('channel');
     if (!channel || channel.type !== ChannelType.GuildVoice) {
-      return interaction.reply({ content: 'Select a voice channel.', ephemeral: true });
+      return interaction.reply({ content: 'Select a voice channel.', flags: 64 });
     }
     cfg.jtcChannelId = channel.id;
     await saveDB();
-    return interaction.reply({ content: ✅ Join To Create hub set to ${channel}, ephemeral: true });
+    return interaction.reply({ content: ✅ Join To Create hub set to ${channel}, flags: 64 });
   }
 });
 // BUTTON HANDLER (voice panel)
@@ -881,7 +881,7 @@ client.on('interactionCreate', async interaction => {
   if (!vc) {
     return interaction.reply({
       content: 'You have to be in a voice channel to use the voice panel.',
-      ephemeral: true
+      flags: 64
     });
   }
   // Restrict control of temp JTC channels to owner OR users with ManageChannels
@@ -892,7 +892,7 @@ client.on('interactionCreate', async interaction => {
     if (!isOwner && !hasManageChannelsUser) {
       return interaction.reply({
         content: 'You can only control the voice channel you created. (Admins with Manage Channels can control any.)',
-        ephemeral: true
+        flags: 64
       });
     }
   }
@@ -900,7 +900,7 @@ client.on('interactionCreate', async interaction => {
   if (!mePerms || !mePerms.has(PermissionsBitField.Flags.ManageChannels)) {
     return interaction.reply({
       content: 'I need **Manage Channels** permission to control this voice channel.',
-      ephemeral: true
+      flags: 64
     });
   }
   const everyone = guild.roles.everyone;
@@ -910,28 +910,28 @@ client.on('interactionCreate', async interaction => {
         await vc.permissionOverwrites.edit(everyone, { Connect: false });
         return interaction.reply({
           content: 🔒 Locked **${vc.name}** — new people can’t join.,
-          ephemeral: true
+          flags: 64
         });
       }
       case 'vc_unlock': {
         await vc.permissionOverwrites.edit(everyone, { Connect: null });
         return interaction.reply({
           content: 🔓 Unlocked **${vc.name}** — anyone can join (if they can see it).,
-          ephemeral: true
+          flags: 64
         });
       }
       case 'vc_hide': {
         await vc.permissionOverwrites.edit(everyone, { ViewChannel: false });
         return interaction.reply({
           content: 👻 Ghosted **${vc.name}** — hidden from everyone.,
-          ephemeral: true
+          flags: 64
         });
       }
       case 'vc_show': {
         await vc.permissionOverwrites.edit(everyone, { ViewChannel: null });
         return interaction.reply({
           content: 🌟 Revealed **${vc.name}** — visible again.,
-          ephemeral: true
+          flags: 64
         });
       }
       case 'vc_limit_up': {
@@ -940,7 +940,7 @@ client.on('interactionCreate', async interaction => {
         await vc.setUserLimit(newLimit);
         return interaction.reply({
           content: ➕ User limit set to **${newLimit || 'no limit'}** for **${vc.name}**.,
-          ephemeral: true
+          flags: 64
         });
       }
       case 'vc_limit_down': {
@@ -948,7 +948,7 @@ client.on('interactionCreate', async interaction => {
         if (currentLimit === 0) {
           return interaction.reply({
             content: 'There is currently **no limit** set. Increase it first before lowering.',
-            ephemeral: true
+            flags: 64
           });
         }
         const membersInVC = vc.members.size;
@@ -957,20 +957,20 @@ client.on('interactionCreate', async interaction => {
         await vc.setUserLimit(newLimit);
         return interaction.reply({
           content: ➖ User limit set to **${newLimit}** for **${vc.name}**.,
-          ephemeral: true
+          flags: 64
         });
       }
       case 'vc_disconnect': {
         if (!me.voice?.channel) {
           return interaction.reply({
             content: 'You are not connected to a voice channel.',
-            ephemeral: true
+            flags: 64
           });
         }
         await me.voice.disconnect().catch(() => {});
         return interaction.reply({
           content: '📤 Disconnected you from the voice channel.',
-          ephemeral: true
+          flags: 64
         });
       }
     }
@@ -978,7 +978,7 @@ client.on('interactionCreate', async interaction => {
     console.error('Voice panel error:', err);
     return interaction.reply({
       content: 'Something went wrong trying to control the voice channel.',
-      ephemeral: true
+      flags: 64
     });
   }
 });
