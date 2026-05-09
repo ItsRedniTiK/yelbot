@@ -74,7 +74,7 @@ function getGuildConfig(gid) {
       xp: {},
       xpBoost: 1,
       wallOfFameChannelId: null,
-      *lastXp: {},
+      lastXp: {},
       // level rewards
       levelRoles: {},
       // join to create
