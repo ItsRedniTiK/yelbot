@@ -1,0 +1,25 @@
+{
+  "1382021392442331226": {
+    "welcomeChannelId": null,
+    "welcomeMessage": "Welcome to {server}, {user} — make yourself at home!",
+    "welcomeImagePath": "assets/welcome.png",
+    "rulesChannelId": null,
+    "rulesMessage": "1) Be respectful\n2) No spam or hate\n3) Have fun and make friends",
+    "announceChannelId": null,
+    "autoRoleId": null,
+    "customRoleId": "1425150608989487185",
+    "twitterUsername": "@th2beee",
+    "spotifyArtistId": "5Gy6xRgGt8jzMxtRWDdaDj",
+    "socialLinks": {
+      "twitter": "",
+      "instagram": "",
+      "youtube": "",
+      "spotify": "",
+      "tiktok": ""
+    },
+    "lastTwitterId": null,
+    "lastSpotifyRelease": null,
+    "roleAnnounceChannelId": "1425156821865336963",
+    "lastBioCheck": {}
+  }
+}
